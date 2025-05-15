@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLFeatureNotSupportedException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 /**
  * 全局异常处理器，处理项目中抛出的业务异常
  */
@@ -24,4 +27,9 @@ public class GlobalExceptionHandler {
         return Result.error(ex.getMessage());
     }
 
+    @ExceptionHandler
+    public Result exceptionHandler(SQLIntegrityConstraintViolationException ex){
+        log.error("系统异常：{}", ex.getMessage());
+        return Result.error("系统异常，请联系管理员");
+    }
 }
